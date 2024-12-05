@@ -1,0 +1,49 @@
+#include <iostream>
+#include <limits> // Para manejar errores de entrada como la actividad anterior
+#include <wchar.h>  // importante incluir éstas librerias para poder respetar el acento al igual que usar el setlocale(LC_ALL, ""); antes de un cout 
+#include <locale.h>
+using namespace std; // sigo utilizando ésta sentencia por el hecho de que me confunde mas colocar el std:: 
+
+int main() {
+    double num1, num2; // Para manejar tanto enteros como decimales utilizaré double éste caso para que sea un poco diferente del float 
+    setlocale(LC_ALL, "");
+    cout << "Escribe el primer número: ";
+    if (!(cin >> num1)) { // Validación de entrada
+    setlocale(LC_ALL, "");
+        cout << "Error: Por favor, ingrese un número válido." << endl;
+        return 1; // Termina el programa si la entrada no es algun número 
+    }
+
+    cout << "Escribe el segundo número: ";
+    if (!(cin >> num2)) { // Validación de entrada nuevamente
+    setlocale(LC_ALL, "");
+        cout << "Error: Por favor, ingrese un número válido." << endl;
+        return 1;
+    }
+
+    // Operaciones a realizar  declaramos todas double de igualmanera para ocupar decimales
+    double suma = num1 + num2;
+    double resta = num1 - num2;
+    double multiplicacion = num1 * num2; 
+
+    // Verificar división entre 0 por eso la dejé aparte, además importante aclarar que en c++ los simbolos son importantes
+    //el simbolo + es suma, el simbolo - o guión alto es resta, el * asterisco significa multiplicación...
+	//  y finaalmente el simbolo / es la división para que el lenguaje c++ pueda realizar las correspondientes operaciones.
+    if (num2 != 0) {
+        double division = num1 / num2;
+        // Mostrar resultados
+        cout << "La suma es: " << suma << endl;
+        cout << "La resta es: " << resta << endl;
+        setlocale(LC_ALL, "");
+        cout << "La multiplicación es: " << multiplicacion << endl;
+        cout << "La división es: " << division << endl;
+    } else {
+        cout << "La suma es: " << suma << endl;
+        cout << "La resta es: " << resta << endl;
+        setlocale(LC_ALL, "");
+        cout << "La multiplicación es: " << multiplicacion << endl;
+        cout << "Error: No se puede dividir entre cero." << endl;
+    }
+
+    return 0;
+}
