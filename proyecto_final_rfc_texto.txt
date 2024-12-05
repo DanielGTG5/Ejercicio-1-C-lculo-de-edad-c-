@@ -1,0 +1,87 @@
+#include <iostream>
+#include <string>
+#include <cctype> // Para manejar caracteres como tolower() y toupper()
+#include <sstream> // Para convertir enteros a cadenas
+#include <wchar.h>  // importante incluir éstas librerias para poder respetar el acento al igual que usar el setlocale(LC_ALL, ""); 
+//antes de un cout que tenga o acento o caracter especial como la ñ en éste caso.
+#include <locale.h>
+
+using namespace std;
+
+// Función para obtener la primera vocal interna del apellido paterno
+char obtenerVocalInterna(const string& apellido) {
+    for (size_t i = 1; i < apellido.length(); ++i) { // Empieza desde 1 para evitar la primera letra
+        char letra = tolower(apellido[i]);
+        if (letra == 'a' || letra == 'e' || letra == 'i' || letra == 'o' || letra == 'u') {
+            return toupper(letra);
+        }
+    }
+    return 'X'; // Retorna 'X' si no encuentra vocal interna
+}
+
+// Función para convertir un número a string
+string convertirAString(int numero) {
+    ostringstream flujo;
+    flujo << numero;
+    return flujo.str();
+}
+
+int main() {
+    string nombre, apellidoPaterno, apellidoMaterno;
+    int anioNacimiento, mesNacimiento, diaNacimiento;
+
+    // Captura de datos
+    cout << "Escribe el nombre: ";
+    getline(cin, nombre);
+
+    cout << "Escribe el apellido paterno: ";
+    getline(cin, apellidoPaterno);
+    setlocale(LC_ALL, "");
+    cout << "Escribe el apellido materno (dejar vacío si no aplica): ";
+    getline(cin, apellidoMaterno);
+    setlocale(LC_ALL, "");
+    cout << "Escribe el año de nacimiento (AAAA): ";
+    cin >> anioNacimiento;
+
+    cout << "Escribe el mes de nacimiento (MM): ";
+    cin >> mesNacimiento;
+    setlocale(LC_ALL, "");
+    cout << "Escribe el día de nacimiento (DD): ";
+    cin >> diaNacimiento;
+
+    // Generación del RFC
+    string rfc;
+
+    // Primera letra del apellido paterno
+    rfc += toupper(apellidoPaterno[0]);
+
+    // Primera vocal interna del apellido paterno
+    rfc += obtenerVocalInterna(apellidoPaterno);
+
+    // Inicial del apellido materno o 'X' si no existe
+    if (!apellidoMaterno.empty()) {
+        rfc += toupper(apellidoMaterno[0]);
+    } else {
+        rfc += 'X';
+    }
+
+    // Inicial del primer nombre
+    rfc += toupper(nombre[0]);
+
+    // Últimos dos dígitos del año de nacimiento
+    string anioStr = convertirAString(anioNacimiento);
+    rfc += anioStr.substr(2, 2);
+
+    // Mes de nacimiento (dos dígitos)
+    if (mesNacimiento < 10) rfc += "0";
+    rfc += convertirAString(mesNacimiento);
+
+    // Día de nacimiento (dos dígitos)
+    if (diaNacimiento < 10) rfc += "0";
+    rfc += convertirAString(diaNacimiento);
+
+    // Mostrar el RFC generado
+    cout << "El RFC generado es: " << rfc << endl;
+
+    return 0;
+}
